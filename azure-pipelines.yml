@@ -22,6 +22,7 @@ jobs:
   - script:   pip install black
     displayName: 'Install black'
   - script: black . --check --diff
+    displayName: 'run black'
   - script: python -m scanpy.tests.blackdiff 10
   - script: python setup.py check --restructuredtext --strict 
   - script: rst2html.py --halt=2 README.rst >/dev/null
