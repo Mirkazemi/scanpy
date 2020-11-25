@@ -5,28 +5,35 @@
     
 trigger:
 - master
-jobs:
-- job:
-  pool:
-    vmImage: 'ubuntu-16.04'
-#  python.version: '3.7'
 
-  steps:
-  - task: UsePythonVersion@0
-    displayName: 'Use Python 3.7'
-    inputs:
-      versionSpec: '3.7'
+pool:
+  vmImage: 'ubuntu-latest'
+strategy:
+  matrix:
+    Python37:
+      python.version: '3.7'
 
-  - script: pip install .[dev,doc]
-    displayName: 'Install [dev,doc]'
-  - script:   pip install black
-    displayName: 'Install black'
-  - script: black . --check --diff
-    displayName: 'run black'
-  - script: python -m scanpy.tests.blackdiff 10
-  - script: python setup.py check --restructuredtext --strict 
-  - script: rst2html.py --halt=2 README.rst >/dev/null
-    displayName: 'Run rst2html'
+steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '$(python.version)'
+  displayName: 'Use Python $(python.version)'
+
+- script: |
+    python -m pip install --upgrade pip
+    pip install -r requirements.txt
+  displayName: 'Install dependencies'
+
+#  - script: pip install .[dev,doc]
+#    displayName: 'Install [dev,doc]'
+#  - script:   pip install black
+#    displayName: 'Install black'
+#  - script: black . --check --diff
+#    displayName: 'run black'
+#  - script: python -m scanpy.tests.blackdiff 10
+#  - script: python setup.py check --restructuredtext --strict 
+#  - script: rst2html.py --halt=2 README.rst >/dev/null
+#    displayName: 'Run rst2html'
 
 #steps:
 #- task: UsePythonVersion@0
