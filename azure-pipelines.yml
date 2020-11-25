@@ -5,7 +5,7 @@
     
 trigger:
 - master
-
+jobs:
 - job:
   pool:
     vmImage: 'ubuntu-16.04'
