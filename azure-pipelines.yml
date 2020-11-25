@@ -10,8 +10,8 @@ pool:
   vmImage: 'ubuntu 16.04'
 jobs:
   - job: "static analysis"
-      python.version: '3.7'    
-      script: |
+    python.version: '3.7'    
+    script: |
         pip install .[dev,doc]
         black . --check --diff
         python -m scanpy.tests.blackdiff 10
