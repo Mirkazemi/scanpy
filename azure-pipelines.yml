@@ -19,6 +19,8 @@ jobs:
 
   - script: pip install .[dev,doc]
     displayName: 'Install [dev,doc]'
+  - script:   pip install black
+    displayName: 'Install black'
   - script: black . --check --diff
   - script: python -m scanpy.tests.blackdiff 10
   - script: python setup.py check --restructuredtext --strict 
