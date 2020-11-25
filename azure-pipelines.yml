@@ -10,15 +10,13 @@ pool:
   vmImage: 'ubuntu 16.04'
 jobs:
   - job: "static analysis"
-      python.version: '3.7'
-          install:
-    
-    script: |
-      pip install .[dev,doc]
-      black . --check --diff
-      python -m scanpy.tests.blackdiff 10
-      python setup.py check --restructuredtext --strict
-      rst2html.py --halt=2 README.rst >/dev/null
+      python.version: '3.7'    
+      script: |
+        pip install .[dev,doc]
+        black . --check --diff
+        python -m scanpy.tests.blackdiff 10
+        python setup.py check --restructuredtext --strict
+        rst2html.py --halt=2 README.rst >/dev/null
 #steps:
 #- task: UsePythonVersion@0
 #  inputs:
