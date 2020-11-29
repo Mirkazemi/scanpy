@@ -23,6 +23,7 @@ steps:
 
 - script: |
     export MPLBACKEND="agg"
+    echo $MPLBACKEND
   displayName: 'Set env'
   
 - script: |
