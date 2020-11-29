@@ -12,6 +12,8 @@ strategy:
   matrix:
     Python37:
       python.version: '3.7'
+    Python36:
+      python.version: '3.6'    
 
 steps:
 - task: UsePythonVersion@0
@@ -20,9 +22,17 @@ steps:
   displayName: 'Use Python $(python.version)'
 
 - script: |
+    export MPLBACKEND="agg"
+  displayName: 'Set env'
+  
+- script: |
     python -m pip install --upgrade pip
     pip install -r requirements.txt
   displayName: 'Install dependencies'
+  
+- script: |
+    pytest --ignore=scanpy/tests/_images
+  displayName: 'PyTest'
 
 #  - script: pip install .[dev,doc]
 #    displayName: 'Install [dev,doc]'
