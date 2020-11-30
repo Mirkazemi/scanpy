@@ -28,12 +28,19 @@ steps:
   
 - script: |
     python -m pip install --upgrade pip
+    pip install docutils sphinx
     pip install -e .[test,louvain,leiden,magic,scvi,harmony]
   displayName: 'Install dependencies'
   
 - script: |
     pytest --ignore=scanpy/tests/_images
   displayName: 'PyTest'
+  
+- script: |
+    python setup.py check --restructuredtext --strict
+    rst2html.py --halt=2 README.rst >/dev/null
+  displayName: 'rst2html test'
+
 
 #  - script: pip install .[dev,doc]
 #    displayName: 'Install [dev,doc]'
