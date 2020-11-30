@@ -1,70 +1,40 @@
-# Python package
-# Create and test a Python package on multiple Python versions.
-# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/python
-    
+   
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-16.04'
-strategy:
-  matrix:
-    Python37:
-      python.version: '3.7'
-    Python36:
-      python.version: '3.6'    
+jobs:
+  - job: PyTest
+    pool:
+        vmImage: 'ubuntu-16.04'
+    strategy:
+        matrix:
+            Python37:
+                python.version: '3.7'
+            Python36:
+                python.version: '3.6'    
 
-steps:
-- task: UsePythonVersion@0
-  inputs:
-    versionSpec: '$(python.version)'
-  displayName: 'Use Python $(python.version)'
+    steps:
+        - task: UsePythonVersion@0
+          inputs:
+            versionSpec: '$(python.version)'
+          displayName: 'Use Python $(python.version)'
 
-- script: |
-    export MPLBACKEND="agg"
-    echo $MPLBACKEND
-  displayName: 'Set env'
+        - script: |
+            export MPLBACKEND="agg"
+            echo $MPLBACKEND
+          displayName: 'Set env'
   
-- script: |
-    python -m pip install --upgrade pip
-    pip install docutils sphinx
-    pip install -e .[test,louvain,leiden,magic,scvi,harmony]
-  displayName: 'Install dependencies'
+        - script: |
+            python -m pip install --upgrade pip
+            pip install docutils sphinx
+            pip install -e .[test,louvain,leiden,magic,scvi,harmony]
+          displayName: 'Install dependencies'
   
-- script: |
-    pytest --ignore=scanpy/tests/_images
-  displayName: 'PyTest'
+        - script: |
+            pytest --ignore=scanpy/tests/_images
+          displayName: 'PyTest'
   
-- script: |
-    python setup.py check --restructuredtext --strict
-    rst2html.py --halt=2 README.rst >/dev/null
-  displayName: 'rst2html test'
-
-
-#  - script: pip install .[dev,doc]
-#    displayName: 'Install [dev,doc]'
-#  - script:   pip install black
-#    displayName: 'Install black'
-#  - script: black . --check --diff
-#    displayName: 'run black'
-#  - script: python -m scanpy.tests.blackdiff 10
-#  - script: python setup.py check --restructuredtext --strict 
-#  - script: rst2html.py --halt=2 README.rst >/dev/null
-#    displayName: 'Run rst2html'
-
-#steps:
-#- task: UsePythonVersion@0
-#  inputs:
-#    versionSpec: '$(python.version)'
-#  displayName: 'Use Python $(python.version)'
-
-#- script: |
-##    python -m pip install --upgrade pip
-#    pip install -r requirements.txt
-#  displayName: 'Install dependencies'
-
-##- script: |
-#    pip install pytest pytest-azurepipelines
-#    pytest
-#  displayName: 'pytest'
+        - script: |
+            python setup.py check --restructuredtext --strict
+            rst2html.py --halt=2 README.rst >/dev/null
+          displayName: 'rst2html'
