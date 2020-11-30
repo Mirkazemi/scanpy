@@ -52,7 +52,8 @@ jobs:
           displayName: 'Use Python 3.7'
           
         - script: |
-            pip install .[dev,doc,black]
+            pip install black
+            pip install .[dev,doc]
           displayName: 'Install dependencies'
          
         - script: |
