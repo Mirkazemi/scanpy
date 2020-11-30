@@ -40,23 +40,44 @@ jobs:
           displayName: 'rst2html'
 
 
-  - job: PyTest
+  - job: static_analysis
+    displayName: static analysis
     pool:
         vmImage: 'ubuntu-16.04'
-    strategy:
-        matrix:
-            static_analysis:
-               python: "3.7"
-               install:
-                  - pip install .[dev,doc]
-               script:
-                  - black . --check --diff
-                  - python -m scanpy.tests.blackdiff 10
-                  - python setup.py check --restructuredtext --strict
-                  - rst2html.py --halt=2 README.rst >/dev/null
+        
+    steps:
+        - task: UsePythonVersion@0
+          inputs:
+            versionSpec: '3.7'
+          displayName: 'Use Python 3.7'
+          
+        - script: |
+            pip install .[dev,doc]
+          displayName: 'Install dependencies'
+         
+        - script: |
+            black . --check --diff
+            python -m scanpy.tests.blackdiff 10
+            python setup.py check --restructuredtext --strict
+            rst2html.py --halt=2 README.rst >/dev/null
 
-            anndata_dev:
-               python: "3.7"
-               install:
-                  - pip install .[dev,test,louvain,leiden,magic,scvi,harmony,skmisc]
-                  - pip install git+https://github.com/theislab/anndata
+  - job: static_analysis
+    displayName: static analysis
+    pool:
+        vmImage: 'ubuntu-16.04'
+        
+    steps:
+        - task: UsePythonVersion@0
+          inputs:
+            versionSpec: '3.7'
+          displayName: 'Use Python 3.7'
+          
+        - script: |
+            pip install .[dev,doc]
+          displayName: 'Install dependencies'
+         
+        - script: |
+            pip install .[dev,test,louvain,leiden,magic,scvi,harmony,skmisc]
+            pip install git+https://github.com/theislab/anndata
+          displayName: 'anndata installation'
+
