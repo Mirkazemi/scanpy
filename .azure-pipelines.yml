@@ -30,9 +30,9 @@ jobs:
             pip install -e .[test,louvain,leiden,magic,scvi,harmony]
           displayName: 'Install dependencies'
   
-        - script: |
-            pytest --ignore=scanpy/tests/_images
-          displayName: 'PyTest'
+#        - script: |
+#            pytest --ignore=scanpy/tests/_images
+#          displayName: 'PyTest'
   
         - script: |
             python setup.py check --restructuredtext --strict
@@ -52,7 +52,7 @@ jobs:
           displayName: 'Use Python 3.7'
           
         - script: |
-            pip install .[dev,doc]
+            pip install .[dev,doc,black]
           displayName: 'Install dependencies'
          
         - script: |
