@@ -61,8 +61,8 @@ jobs:
             python setup.py check --restructuredtext --strict
             rst2html.py --halt=2 README.rst >/dev/null
 
-  - job: static_analysis
-    displayName: static analysis
+  - job: anndata_dev
+    displayName: anndata dev
     pool:
         vmImage: 'ubuntu-16.04'
         
