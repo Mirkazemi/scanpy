@@ -10,8 +10,8 @@ jobs:
         matrix:
             Python37:
                 python.version: '3.7'
-            Python36:
-                python.version: '3.6'    
+#            Python36:
+#                python.version: '3.6'    
 
     steps:
         - task: UsePythonVersion@0
@@ -38,3 +38,25 @@ jobs:
             python setup.py check --restructuredtext --strict
             rst2html.py --halt=2 README.rst >/dev/null
           displayName: 'rst2html'
+
+
+  - job: PyTest
+    pool:
+        vmImage: 'ubuntu-16.04'
+    strategy:
+        matrix:
+            static_analysis:
+               python: "3.7"
+               install:
+                  - pip install .[dev,doc]
+               script:
+                  - black . --check --diff
+                  - python -m scanpy.tests.blackdiff 10
+                  - python setup.py check --restructuredtext --strict
+                  - rst2html.py --halt=2 README.rst >/dev/null
+
+            anndata_dev:
+               python: "3.7"
+               install:
+                  - pip install .[dev,test,louvain,leiden,magic,scvi,harmony,skmisc]
+                  - pip install git+https://github.com/theislab/anndata
