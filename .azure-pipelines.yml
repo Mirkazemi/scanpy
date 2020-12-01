@@ -10,8 +10,8 @@ jobs:
         matrix:
             Python37:
                 python.version: '3.7'
-#            Python36:
-#                python.version: '3.6'    
+            Python36:
+                python.version: '3.6'    
 
     steps:
         - task: UsePythonVersion@0
@@ -30,9 +30,9 @@ jobs:
             pip install -e .[test,louvain,leiden,magic,scvi,harmony]
           displayName: 'Install dependencies'
   
-#        - script: |
-#            pytest --ignore=scanpy/tests/_images
-#          displayName: 'PyTest'
+        - script: |
+            pytest --ignore=scanpy/tests/_images
+          displayName: 'PyTest'
   
         - script: |
             python setup.py check --restructuredtext --strict
